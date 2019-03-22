@@ -2,43 +2,47 @@
 #pragma pack(2)
 #include <iostream>
 #include <cstring>
+#include <fstream>
 
 using namespace std;
 typedef struct {
-    short   bfType;
-    int     bfSize;
-    short   bfReserved1;
-    short   bfReserved2;
-    int     bfOffBits;
+    uint16_t  bfType;
+    uint32_t  bfSize;
+    uint16_t  bfReserved1;
+    uint16_t  bfReserved2;
+    uint32_t  bfOffBits;
 } BITMAPFILEHEADER;
 
 typedef struct {
-    int      biSize;
-    int      biWidth;
-    int      biHeight;
-    short    biPlanes;
-    short    biBitCount;
-    int      biCompression;
-    int      biSizeImage;
-    int      biXPelsPerMeter;
-    int      biYPelsPerMeter;
-    int      biClrUsed;
-    int      biClrImportant;
+    uint32_t  biSize;
+    uint32_t  biWidth;
+    uint32_t  biHeight;
+    uint16_t  biPlanes;
+    uint16_t  biBitCount;
+    uint32_t  biCompression;
+    uint32_t  biSizeImage;
+    uint32_t  biXPelsPerMeter;
+    uint32_t  biYPelsPerMeter;
+    uint32_t  biClrUsed;
+    uint32_t  biClrImportant;
 } BITMAPINFOHEADER;
 class Bitmap{
 private:
     uint32_t* pixels;
-    int height;
-    int width;
-    int size;
+    uint32_t  height;
+    uint32_t  width;
+    uint32_t  size;
     BITMAPFILEHEADER fileHeader;
     BITMAPINFOHEADER bitmapHeader;
-    char *bits;
 public:
     Bitmap(int wid, int hei);
-    BitmapRead(const char* name);
     ~Bitmap();
 
+    void read(istream& f, uint32_t& val);
+    void read(istream& f, uint16_t& val);
+    void load(const char* filename);
+    void save(const char* filename);
     void line(double x0, double y0, double x1, double y1, int bgr);
-    void writeBMP(const char* name);
+    void rect(double x0, double y0, double x1, double y1, int bgr);
+    void write(const char* name);
 };
